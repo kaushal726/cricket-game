@@ -1,35 +1,67 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import Footer from './Components/Footer/Footer'
+import Header from './Components/Header/Header'
+import Home from './Components/Home/Home'
+import Score from './Components/Score/Score'
+import MyContext from './Context/ScoreContext'
+import { Toaster } from 'react-hot-toast';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [scorePlayer1, setScorePlayer1] = useState([]);
+  const [scorePlayer2, setScorePlayer2] = useState([]);
+  const [totalScorePlayer1, setTotalScorePlayer1] = useState();
+  const [totalScorePlayer2, setTotalScorePlayer2] = useState();
 
+  const updateScorePlayer1 = (value, reset) => {
+    if (reset) {
+      setScorePlayer1([]);
+    }
+    else {
+      setScorePlayer1(prevState => [...prevState, Number(value)]);
+    }
+  }
+
+  const updateScorePlayer2 = (value, reset) => {
+    if (reset) {
+      setScorePlayer2([]);
+    }
+    else {
+      setScorePlayer2(prevState => [...prevState, value])
+    }
+  }
+
+  const updateTotalScorePlayer1 = (value) => {
+    setTotalScorePlayer1(value);
+  }
+  const updateTotalScorePlayer2 = (value) => {
+    setTotalScorePlayer2(value);
+
+  }
+
+
+
+  const contextValue = {
+    scorePlayer1,
+    scorePlayer2,
+    updateScorePlayer1,
+    updateScorePlayer2,
+    totalScorePlayer1,
+    totalScorePlayer2,
+    updateTotalScorePlayer1,
+    updateTotalScorePlayer2
+  };
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <MyContext.Provider value={contextValue}>
+      <Toaster />
+      <div className='flex flex-col justify-between items-center h-screen w-full bg-grey-100'>
+        <Header />
+        <Score />
+        <Home />
+        <Footer />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </MyContext.Provider>
+  );
 }
 
-export default App
+export default App;
