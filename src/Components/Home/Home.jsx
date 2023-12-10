@@ -4,10 +4,24 @@ import MyContext from '../../Context/ScoreContext'
 import toast from 'react-hot-toast';
 
 const Home = () => {
+    const restartGame = () => {
+        round1.current = true;
+        gameOver.current = false;
+        updateScorePlayer1(0, true);
+        updateScorePlayer2(0, true);
+        toast.success('Game Restarted', {
+            duration: 1000
+        });
+        toast.success('You Are Batting', {
+            duration: 2000
+        });
+    }
     const scoreMatched = useRef(false);
     const round1 = useRef(true);
     const gameOver = useRef(false);
-    const [valueGlobal, setvalueGlobal] = useState(null);
+    const [mode, setMode] = useState("Batting");
+    // const [randomGlobal, setRandomGlobal] = useState(null);
+
     const [counter, setCount] = useState(1);
     const [counter2, setCount2] = useState(1);
 
@@ -21,11 +35,16 @@ const Home = () => {
         updateTotalScorePlayer2
     } = useContext(MyContext);
     const handleRound1 = () => {
+
         setTimeout(() => {
             // scoreMatched.current = false;
             updateScorePlayer1(0, true);
             updateScorePlayer2(0, true);
             round1.current = false;
+            setMode("Bowling")
+            toast.success('You are bowling', {
+                duration: 2000
+            });
         }, 4000);
     }
 
@@ -42,10 +61,13 @@ const Home = () => {
 
     const handleScore = (e) => {
         const value = e.target.value;
-        setvalueGlobal(value);
+        // setvalueGlobal(value);
+
         let randomScore = Math.floor(Math.random() * 6) + 1;
+        // setRandomGlobal(randomScore);
         if (value) {
             if (round1.current) {
+                setMode("Batting")
                 if (value != randomScore && !scoreMatched.current) {
                     setCount(counter + 1);
                     updateScorePlayer1(value, false);
@@ -67,7 +89,7 @@ const Home = () => {
                         updateScorePlayer2(randomScore, false);
                         scoreMatched.current = true;
                         handleRound1();
-                        toast.success('OUT', {
+                        toast.error('OUT', {
                             duration: 4000
                         });
                     }
@@ -88,13 +110,13 @@ const Home = () => {
                         updateScorePlayer2(randomScore, false);
                         gameOver.current = true;
                         handleRound2();
-                        if (totalScorePlayer1 < totalScorePlayer2) {
-                            toast.error('You LOST', {
+                        if (totalScorePlayer1 > totalScorePlayer2) {
+                            toast.success('You WIN', {
                                 duration: 4000
                             });
                         }
                         else {
-                            toast.success('You WIN', {
+                            toast.error('You LOST', {
                                 duration: 4000
                             });
                         }
@@ -115,12 +137,18 @@ const Home = () => {
     }, [scoreMatched.current])
 
     useEffect(() => {
+        toast.success('You Are Batting', {
+            duration: 2000
+        });
+    }, [])
+
+    useEffect(() => {
         let totalScore2 = scorePlayer2.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
         updateTotalScorePlayer2(totalScore2);
         console.log(totalScore2);
         if (totalScorePlayer1 < totalScore2) {
-            updateScorePlayer1(valueGlobal, false);
-            updateScorePlayer2(randomScore, false);
+            // updateScorePlayer1(valueGlobal, false);
+            // updateScorePlayer2(randomGlobal, false);
             handleRound2();
             gameOver.current = true;
             toast.error('You LOST', {
@@ -130,11 +158,10 @@ const Home = () => {
     }, [counter2])
 
     return (
-        <section className=' w-full flex justify-between items-center '>
-            <section className='flex justify-center items-center flex-col'>
-
-                <h3>Player 1</h3>
-                <section>
+        <section>
+            <section className='flex w-full flex-col justify-center items-center h-24 mt-6 '>
+                <h3>{`You are ${mode}`}</h3>
+                <section className='mt-6'>
                     <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={1} onClick={(e) => { handleScore(e) }}>1</button>
                     <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={2} onClick={(e) => { handleScore(e) }}>2</button>
                     <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={3} onClick={(e) => { handleScore(e) }}>3</button>
@@ -142,13 +169,13 @@ const Home = () => {
                     <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={5} onClick={(e) => { handleScore(e) }}>5</button>
                     <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={6} onClick={(e) => { handleScore(e) }}>6</button>
                 </section>
-            </section>
-            <section className='flex justify-center items-center flex-col'>
-
-
-                <h3>BOT</h3>
             </section >
-        </section >
+            <section className='flex justify-center items-center h-16 mt-10'>
+                <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' onClick={restartGame}>
+                    Restart Game
+                </button>
+            </section>
+        </section>
 
     )
 }
