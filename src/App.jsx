@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 function App() {
   const [scorePlayer1, setScorePlayer1] = useState([]);
   const [scorePlayer2, setScorePlayer2] = useState([]);
+  const [playerBatting, setPlayerBatting] = useState(true);
   const [totalScorePlayer1, setTotalScorePlayer1] = useState();
   const [totalScorePlayer2, setTotalScorePlayer2] = useState();
 
@@ -39,17 +40,23 @@ function App() {
 
   }
 
+  const updatePlayerBatting = (value) => {
+    setPlayerBatting(value);
+  }
+
 
 
   const contextValue = {
     scorePlayer1,
     scorePlayer2,
+    playerBatting,
     updateScorePlayer1,
     updateScorePlayer2,
     totalScorePlayer1,
     totalScorePlayer2,
     updateTotalScorePlayer1,
-    updateTotalScorePlayer2
+    updateTotalScorePlayer2,
+    updatePlayerBatting
   };
   return (
     <MyContext.Provider value={contextValue}>

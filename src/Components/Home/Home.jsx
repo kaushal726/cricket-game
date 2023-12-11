@@ -2,20 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useContext, useRef } from 'react'
 import MyContext from '../../Context/ScoreContext'
 import toast from 'react-hot-toast';
+// import DialogBox from 'react-js-dialog-box';
 
 const Home = () => {
-    const restartGame = () => {
-        round1.current = true;
-        gameOver.current = false;
-        updateScorePlayer1(0, true);
-        updateScorePlayer2(0, true);
-        toast.success('Game Restarted', {
-            duration: 1000
-        });
-        toast.success('You Are Batting', {
-            duration: 2000
-        });
-    }
+
+    let batting = 'w-14 h-14 flex items-center justify-center text-lg font-bold font-sans text-black bg-white border-4 border-black rounded-full m-2';
+    let bowling = 'w-14 h-14 flex items-center justify-center text-lg font-bold font-sans text-white bg-red-600 border-4 border-black rounded-full m-2';
     const scoreMatched = useRef(false);
     const round1 = useRef(true);
     const gameOver = useRef(false);
@@ -26,14 +18,31 @@ const Home = () => {
     const [counter2, setCount2] = useState(1);
 
     const { scorePlayer1,
+        playerBatting,
         scorePlayer2,
         updateScorePlayer1,
         updateScorePlayer2,
         totalScorePlayer1,
         totalScorePlayer2,
         updateTotalScorePlayer1,
-        updateTotalScorePlayer2
+        updateTotalScorePlayer2,
+        updatePlayerBatting
     } = useContext(MyContext);
+
+    const restartGame = () => {
+        round1.current = true;
+        gameOver.current = false;
+        updatePlayerBatting(true);
+        updateScorePlayer1(0, true);
+        updateScorePlayer2(0, true);
+        toast.success('Game Restarted', {
+            duration: 1000
+        });
+        toast.success('You Are Batting', {
+            duration: 2000
+        });
+    }
+
     const handleRound1 = () => {
 
         setTimeout(() => {
@@ -45,9 +54,9 @@ const Home = () => {
             toast.success('You are bowling', {
                 duration: 2000
             });
+            updatePlayerBatting(false)
         }, 4000);
     }
-
     const handleRound2 = () => {
         setTimeout(() => {
             // scoreMatched.current = false;
@@ -67,12 +76,13 @@ const Home = () => {
         // setRandomGlobal(randomScore);
         if (value) {
             if (round1.current) {
+                // updatePlayerBatting(true);
                 setMode("Batting")
                 if (value != randomScore && !scoreMatched.current) {
                     setCount(counter + 1);
                     updateScorePlayer1(value, false);
                     updateScorePlayer2(randomScore, false);
-                    console.log(counter);
+                    // console.log(counter);
                     if (counter == 6) {
                         scoreMatched.current = true;
                         handleRound1();
@@ -84,7 +94,7 @@ const Home = () => {
                 }
                 else {
                     if (!scoreMatched.current) {
-                        console.log("Value matched");
+                        // console.log("Value matched");
                         updateScorePlayer1(value, false);
                         updateScorePlayer2(randomScore, false);
                         scoreMatched.current = true;
@@ -97,12 +107,13 @@ const Home = () => {
             }
             else {
                 if (!gameOver.current) {
+
                     if (value != randomScore && counter2 < 6) {
                         setCount2(counter2 + 1);
                         updateScorePlayer1(value, false);
                         updateScorePlayer2(randomScore, false);
-                        console.log(totalScorePlayer2);
-                        console.log(totalScorePlayer1);
+                        // console.log(totalScorePlayer2);
+                        // console.log(totalScorePlayer1);
 
                     }
                     else {
@@ -140,12 +151,12 @@ const Home = () => {
         toast.success('You Are Batting', {
             duration: 2000
         });
-    }, [])
 
+    }, [])
     useEffect(() => {
         let totalScore2 = scorePlayer2.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
         updateTotalScorePlayer2(totalScore2);
-        console.log(totalScore2);
+        // console.log(totalScore2);
         if (totalScorePlayer1 < totalScore2) {
             // updateScorePlayer1(valueGlobal, false);
             // updateScorePlayer2(randomGlobal, false);
@@ -158,24 +169,28 @@ const Home = () => {
     }, [counter2])
 
     return (
-        <section>
+        <section className='w-full'>
             <section className='flex w-full flex-col justify-center items-center h-24 mt-6 '>
-                <h3>{`You are ${mode}`}</h3>
-                <section className='mt-6'>
-                    <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={1} onClick={(e) => { handleScore(e) }}>1</button>
-                    <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={2} onClick={(e) => { handleScore(e) }}>2</button>
-                    <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={3} onClick={(e) => { handleScore(e) }}>3</button>
-                    <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={4} onClick={(e) => { handleScore(e) }}>4</button>
-                    <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={5} onClick={(e) => { handleScore(e) }}>5</button>
-                    <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' value={6} onClick={(e) => { handleScore(e) }}>6</button>
+                {/* <h3>{`You are ${mode}`}</h3> */}
+                {playerBatting ? <p className='text-center font-bold'>Hello! Welcome to the game. Here, you will receive six balls to bat at first. The runs you press will be your score. If the bowler hits the ball with the same run you have entered, you will be out, and Inning 2 will start.</p> : <p className='text-center font-bold'>
+                    Now, you will be bowling. If you bowl the same ball that the batsman tries to hit, the batsman will be out. Whoever has the highest score will win the match.</p>}
+                <section className='mt-6 flex'>
+                    <button className={playerBatting ? batting : bowling} value={1} onClick={(e) => { handleScore(e) }}>1</button>
+                    <button className={playerBatting ? batting : bowling} value={2} onClick={(e) => { handleScore(e) }}>2</button>
+                    <button className={playerBatting ? batting : bowling} value={3} onClick={(e) => { handleScore(e) }}>3</button>
+                    <button className={playerBatting ? batting : bowling} value={4} onClick={(e) => { handleScore(e) }}>4</button>
+                    <button className={playerBatting ? batting : bowling} value={5} onClick={(e) => { handleScore(e) }}>5</button>
+                    <button className={playerBatting ? batting : bowling} value={6} onClick={(e) => { handleScore(e) }}>6</button>
                 </section>
             </section >
-            <section className='flex justify-center items-center h-16 mt-10'>
+
+
+            < section className='flex justify-center items-center h-16 mt-10' >
                 <button className='p-2 bg-slate-300 m-1 px-4 rounded-lg border' onClick={restartGame}>
                     Restart Game
                 </button>
-            </section>
-        </section>
+            </section >
+        </section >
 
     )
 }
