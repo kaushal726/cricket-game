@@ -59,14 +59,14 @@ const Home = () => {
         }, 1000);
     }
     const handleRound2 = () => {
-        // setTimeout(() => {
-        // scoreMatched.current = false;
-        updateScorePlayer1(0, true);
-        updateScorePlayer2(0, true);
-        updateTotalScorePlayer1(0); updateTotalScorePlayer2(0);
+        setTimeout(() => {
+            // scoreMatched.current = false;
+            updateScorePlayer1(0, true);
+            updateScorePlayer2(0, true);
+            updateTotalScorePlayer1(0); updateTotalScorePlayer2(0);
 
-        // round1.current = false;
-        // }, 4000);
+            // round1.current = false;
+        }, 2000);
     }
 
     const handleScore = (e) => {
