@@ -61,7 +61,7 @@ function App() {
   return (
     <MyContext.Provider value={contextValue}>
       <Toaster />
-      <div className='flex flex-col items-center h-screen w-full bg-grey-100'>
+      <div className='flex flex-col justify-between items-center h-screen w-full bg-grey-100'>
         <Header />
         <Score />
         <Home />

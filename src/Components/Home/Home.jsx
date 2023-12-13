@@ -6,12 +6,12 @@ import toast from 'react-hot-toast';
 
 const Home = () => {
 
-    let batting = 'w-14 h-14 flex items-center justify-center text-lg font-bold font-sans text-black bg-white border-4 border-black rounded-full m-2';
-    let bowling = 'w-14 h-14 flex items-center justify-center text-lg font-bold font-sans text-white bg-red-600 border-4 border-black rounded-full m-2';
+    let batting = 'w-9 md:w-14 h-9 md:h-14 flex items-center justify-center text-lg font-bold font-sans text-black bg-white border-4 border-black rounded-full m-2';
+    let bowling = 'w-9 md:w-14 h-9 md:h-14 flex items-center justify-center text-lg font-bold font-sans text-white bg-red-600 border-4 border-black rounded-full m-2';
     const scoreMatched = useRef(false);
     const round1 = useRef(true);
     const gameOver = useRef(false);
-    const [mode, setMode] = useState("Batting");
+    // const [mode, setMode] = useState("Batting");
     // const [randomGlobal, setRandomGlobal] = useState(null);
 
     const [counter, setCount] = useState(1);
@@ -51,22 +51,22 @@ const Home = () => {
             updateScorePlayer1(0, true);
             updateScorePlayer2(0, true);
             round1.current = false;
-            setMode("Bowling")
+            // setMode("Bowling")
             toast.success('You are bowling', {
                 duration: 2000
             });
             updatePlayerBatting(false)
-        }, 4000);
+        }, 1000);
     }
     const handleRound2 = () => {
-        setTimeout(() => {
-            // scoreMatched.current = false;
-            updateScorePlayer1(0, true);
-            updateScorePlayer2(0, true);
-            updateTotalScorePlayer1(0); updateTotalScorePlayer2(0);
+        // setTimeout(() => {
+        // scoreMatched.current = false;
+        updateScorePlayer1(0, true);
+        updateScorePlayer2(0, true);
+        updateTotalScorePlayer1(0); updateTotalScorePlayer2(0);
 
-            // round1.current = false;
-        }, 4000);
+        // round1.current = false;
+        // }, 4000);
     }
 
     const handleScore = (e) => {
@@ -78,7 +78,7 @@ const Home = () => {
         if (value) {
             if (round1.current) {
                 // updatePlayerBatting(true);
-                setMode("Batting")
+                // setMode("Batting")
                 if (value != randomScore && !scoreMatched.current) {
                     setCount(counter + 1);
                     updateScorePlayer1(value, false);
@@ -173,7 +173,7 @@ const Home = () => {
         <section className='w-full'>
             <section className='flex w-full flex-col justify-center items-center h-24 mt-6 '>
                 {/* <h3>{`You are ${mode}`}</h3> */}
-                {playerBatting ? <p className='text-center font-bold'>Hello! Welcome to the game. Here, you will receive six balls to bat at first. The runs you press will be your score. If the bowler hits the ball with the same run you have entered, you will be out, and Inning 2 will start.</p> : <p className='text-center font-bold'>
+                {playerBatting ? <p className='text-xs md:text-base text-center font-bold'>Hello! Welcome to the game. Here, you will receive six balls to bat at first. The runs you press will be your score. If the bowler hits the ball with the same run you have entered, you will be out, and Inning 2 will start.</p> : <p className='text-center font-bold'>
                     Now, you will be bowling. If you bowl the same ball that the batsman tries to hit, the batsman will be out. Whoever has the highest score will win the match.</p>}
                 <section className='mt-6 flex'>
                     <button className={playerBatting ? batting : bowling} value={1} onClick={(e) => { handleScore(e) }}>1</button>
