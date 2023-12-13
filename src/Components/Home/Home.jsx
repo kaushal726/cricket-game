@@ -31,6 +31,7 @@ const Home = () => {
 
     const restartGame = () => {
         round1.current = true;
+        scoreMatched.current = false;
         gameOver.current = false;
         updatePlayerBatting(true);
         updateScorePlayer1(0, true);
