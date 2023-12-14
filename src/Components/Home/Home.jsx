@@ -52,7 +52,7 @@ const Home = () => {
                 duration: 2000
             });
             updatePlayerBatting(false)
-        }, 200);
+        }, 2000);
     }
 
 
@@ -62,7 +62,7 @@ const Home = () => {
             updateScorePlayer2(0, true);
             updateTotalScorePlayer1(0);
             updateTotalScorePlayer2(0);
-        }, 200);
+        }, 2000);
     }
 
 
