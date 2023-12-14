@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import './App.css'
-import Footer from './Components/Footer/Footer'
 import Header from './Components/Header/Header'
 import Home from './Components/Home/Home'
 import Score from './Components/Score/Score'
@@ -58,6 +57,7 @@ function App() {
     updateTotalScorePlayer2,
     updatePlayerBatting
   };
+
   return (
     <MyContext.Provider value={contextValue}>
       <Toaster />
@@ -65,7 +65,6 @@ function App() {
         <Header />
         <Score />
         <Home />
-        {/* <Footer /> */}
       </div>
     </MyContext.Provider>
   );

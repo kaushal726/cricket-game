@@ -3,7 +3,6 @@ import MyContext from '../../Context/ScoreContext'
 const Score = () => {
     const { scorePlayer1, scorePlayer2, totalScorePlayer1,
         totalScorePlayer2, playerBatting } = useContext(MyContext);
-    // console.log(playerBatting);
     let batting = 'w-9 md:w-14 h-9 md:h-14 flex items-center justify-center text-lg font-extrabold font-sans text-black bg-white border-4 border-black rounded-full m-2';
     let bowling = 'w-9 md:w-14 h-9 md:h-14 flex items-center justify-center text-lg font-extrabold font-sans text-black bg-red-600 border-4 border-black rounded-full m-2';
 
@@ -16,9 +15,8 @@ const Score = () => {
                         <h1 className='text-white text-base md:text-lg font-bold'>{totalScorePlayer1}</h1>
                     </div>
                     <div className='flex justify-center items-center flex-col p-5'>
-                        <p className='text-white text-sm md:text-base'>Robot Score</p>
+                        <p className='text-white text-sm md:text-base'>Kaushal Score</p>
                         <h1 className='text-white text-base md:text-lg font-bold'>{totalScorePlayer2}</h1>
-
                     </div>
                 </div>
             </section>
